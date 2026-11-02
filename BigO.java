@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class BigOAnalyzer {
+public class BigO {
 
     // 1. O(1) 
     public static int getFirstElement(int[] arr) {
