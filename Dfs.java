@@ -1,75 +1,36 @@
-import java.util.ArrayList;
-import java.util.List;
-
-class Stasiun {
-    String nama;
-    List<Stasiun> tetangga = new ArrayList<>();
-    boolean sudahDikunjungi = false;
-
-    
-    public Stasiun(String nama) {
-        this.nama = nama;
-    }
-
-    public void hubungkan(Stasiun tujuan) {
-        this.tetangga.add(tujuan);
-        tujuan.tetangga.add(this);
-    }
-}
-
 public class Dfs {
 
-    public static void telusuri(Stasiun stasiunSaatIni) {
-        stasiunSaatIni.sudahDikunjungi = true;
-        System.out.print(stasiunSaatIni.nama + " ");
+    static String[] namaStasiun = {"A", "B", "C", "D", "E", "F", "G", "H"};
 
-        for (Stasiun t : stasiunSaatIni.tetangga) {
-            if (!t.sudahDikunjungi) {
-                telusuri(t); 
+    static int[][] rel = {
+        // A  B  C  D  E  F  G  H
+        {  0, 0, 1, 0, 1, 0, 1, 0 }, // Stasiun A (0)
+        {  0, 0, 1, 0, 0, 0, 0, 0 }, // Stasiun B (1)
+        {  1, 1, 0, 1, 0, 0, 0, 0 }, // Stasiun C (2)
+        {  0, 0, 1, 0, 0, 1, 0, 0 }, // Stasiun D (3)
+        {  1, 0, 0, 0, 0, 1, 0, 0 }, // Stasiun E (4)
+        {  0, 0, 0, 1, 1, 0, 0, 0 }, // Stasiun F (5)
+        {  1, 0, 0, 0, 0, 0, 0, 1 }, // Stasiun G (6)
+        {  0, 0, 0, 0, 0, 0, 1, 0 }  // Stasiun H (7)
+    };
+
+    static boolean[] sudahDikunjungi = new boolean[8];
+
+    static void telusuri(int stasiunSaatIni) {
+        sudahDikunjungi[stasiunSaatIni] = true;
+        System.out.print(namaStasiun[stasiunSaatIni] + " ");
+
+        for (int tujuan = 0; tujuan < 8; tujuan++) {
+            
+            if (rel[stasiunSaatIni][tujuan] == 1 && !sudahDikunjungi[tujuan]) {
+                telusuri(tujuan);
             }
         }
     }
 
     public static void main(String[] args) {
-        Stasiun A = new Stasiun("A");
-        Stasiun B = new Stasiun("B");
-        Stasiun C = new Stasiun("C");
-        Stasiun D = new Stasiun("D");
-        Stasiun E = new Stasiun("E");
-        Stasiun F = new Stasiun("F");
-        Stasiun G = new Stasiun("G");
-        Stasiun H = new Stasiun("H");
-
-        A.hubungkan(C); 
-        A.hubungkan(E); 
-        A.hubungkan(G); 
+        System.out.println("=== HASIL PENELUSURAN STASIUN (DFS MATRIKS) ===");
         
-        B.hubungkan(C); 
-        
-        C.hubungkan(D);
-        
-        D.hubungkan(F); 
-        
-        E.hubungkan(F); 
-        
-        G.hubungkan(H); 
-
-        
-        System.out.println("=== KONEKSI TIAP STASIUN ===");
-        Stasiun[] daftarStasiun = {A, B, C, D, E, F, G, H};
-        
-        for (Stasiun s : daftarStasiun) { 
-            System.out.print(s.nama + " -> ");
-            for (int i = 0; i < s.tetangga.size(); i++) {
-                System.out.print(s.tetangga.get(i).nama);
-                if (i < s.tetangga.size() - 1) {
-                    System.out.print(", ");
-                }
-            }
-            System.out.println();
-        }
-
-        System.out.println("\n=== URUTAN HASIL KUNJUNGAN ===");
-        telusuri(A);
+        telusuri(0); 
     }
 }
