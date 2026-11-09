@@ -1,44 +1,42 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
-
-class Stasiun {
-    String nama;
-    List<Stasiun> tetangga = new ArrayList<>();
-    boolean sudahDikunjungi = false;
-
-    public Stasiun(String nama) {
-        this.nama = nama;
-    }
-
-    public void hubungkan(Stasiun tujuan) {
-        this.tetangga.add(tujuan);
-        tujuan.tetangga.add(this);
-    }
-}
 
 public class Bfs {
 
-    public static void penelusuranBFS(Stasiun stasiunAwal) {
-        Queue<Stasiun> antrean = new LinkedList<>();
+    static String[] namaStasiun = {"A", "B", "C", "D", "E", "F", "G", "H"};
 
-        
-        stasiunAwal.sudahDikunjungi = true;
+    // Matriks Rel 8x8 (1 = Ada Rel, 0 = Tidak Ada Rel)
+    static int[][] rel = {
+        // A  B  C  D  E  F  G  H
+        {  0, 0, 1, 0, 1, 0, 1, 0 }, // Stasiun A
+        {  0, 0, 1, 0, 0, 0, 0, 0 }, // Stasiun B
+        {  1, 1, 0, 1, 0, 0, 0, 0 }, // Stasiun C
+        {  0, 0, 1, 0, 0, 1, 0, 0 }, // Stasiun D
+        {  1, 0, 0, 0, 0, 1, 0, 0 }, // Stasiun E
+        {  0, 0, 0, 1, 1, 0, 0, 0 }, // Stasiun F
+        {  1, 0, 0, 0, 0, 0, 0, 1 }, // Stasiun G
+        {  0, 0, 0, 0, 0, 0, 1, 0 }  // Stasiun H
+    };
+
+    static boolean[] sudahDikunjungi = new boolean[8];
+
+    static void telusuriBFS(int stasiunAwal) {
+        Queue<Integer> antrean = new LinkedList<>();
+
+       
+        sudahDikunjungi[stasiunAwal] = true;
         antrean.add(stasiunAwal);
 
-        System.out.println("=== HASIL AKHIR URUTAN KUNJUNGAN (BFS) ===");
+        System.out.println("=== HASIL URUTAN BFS (PER LAPIS) ===");
 
         while (!antrean.isEmpty()) {
-         
-            Stasiun saatIni = antrean.poll();
-            System.out.print(saatIni.nama + " ");
+            int saatIni = antrean.poll();
+            System.out.print(namaStasiun[saatIni] + " ");
 
-          
-            for (Stasiun t : saatIni.tetangga) {
-                if (!t.sudahDikunjungi) {
-                    t.sudahDikunjungi = true; 
-                    antrean.add(t);           
+            for (int tujuan = 0; tujuan < 8; tujuan++) {
+                if (rel[saatIni][tujuan] == 1 && !sudahDikunjungi[tujuan]) {
+                    sudahDikunjungi[tujuan] = true; 
+                    antrean.add(tujuan);
                 }
             }
         }
@@ -46,24 +44,6 @@ public class Bfs {
     }
 
     public static void main(String[] args) {
-        Stasiun A = new Stasiun("A");
-        Stasiun B = new Stasiun("B");
-        Stasiun C = new Stasiun("C");
-        Stasiun D = new Stasiun("D");
-        Stasiun E = new Stasiun("E");
-        Stasiun F = new Stasiun("F");
-        Stasiun G = new Stasiun("G");
-        Stasiun H = new Stasiun("H");
-
-        A.hubungkan(C);
-        A.hubungkan(E);
-        A.hubungkan(G);
-        B.hubungkan(C);
-        C.hubungkan(D);
-        D.hubungkan(F);
-        E.hubungkan(F);
-        G.hubungkan(H);
-
-        penelusuranBFS(A);
+        telusuriBFS(0); 
     }
 }
