@@ -21,7 +21,7 @@ public class MergeSort {
         int rightIndex = 0;
         int mergedIndex = 0;
 
-        // Loop 1: Bandingkan elemen terdepan kiri & kanan, masukkan yang lebih kecil
+      
         while (leftIndex < leftArr.length && rightIndex < rightArr.length) {
             if (leftArr[leftIndex] < rightArr[rightIndex]) {
                 merged[mergedIndex++] = leftArr[leftIndex++];
@@ -30,12 +30,12 @@ public class MergeSort {
             }
         }
 
-        // Loop 2: Jika array kanan sudah habis, masukkan sisa elemen array kiri
+      
         while (leftIndex < leftArr.length) {
             merged[mergedIndex++] = leftArr[leftIndex++];
         }
 
-        // Loop 3: Jika array kiri sudah habis, masukkan sisa elemen array kanan
+        
         while (rightIndex < rightArr.length) {
             merged[mergedIndex++] = rightArr[rightIndex++];
         }
@@ -44,7 +44,6 @@ public class MergeSort {
     }
 
     public static void main(String[] args) {
-        // Data contoh persis seperti di gambar slide dosen[cite: 6]
         int[] data = {6, 5, 12, 10, 9, 1};
 
         System.out.println("Sebelum urut : " + Arrays.toString(data));
