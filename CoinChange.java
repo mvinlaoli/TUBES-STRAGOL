@@ -1,33 +1,42 @@
 public class CoinChange {
+
     public static void main(String[] args) {
-        int[] coins = {1, 2, 3, 4, 5};
-        int target = 5;
+        int[] coins = {1, 2, 3, 5}; 
+        int targetSum = 6;          
+        int n = coins.length;       // Jumlah koin = 4
 
-        int[][] arr = new int[coins.length][target + 1];
+        int[][] dp = new int[n + 1][targetSum + 1];
 
-        for (int i = 0; i < coins.length; i++) {
-            arr[i][0] = 1;
-        }
-
-        for (int i = 0; i < coins.length; i++) {
-            int coinValue = coins[i];
-            for (int j = 1; j <= target; j++) {
-                
-                int atas = 0;
-                if (i > 0) {
-                    atas = arr[i - 1][j];
-                }
-                
-                int samping = 0;
-                if (j >= coinValue) {
-                    samping = arr[i][j - coinValue];
-                }
-                
-                arr[i][j] = atas + samping;
+        // Inisialisasi seluruh isi tabel dengan nilai 0
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= targetSum; j++) {
+                dp[i][j] = 0;
             }
         }
-        
-        int hasilAkhir = arr[coins.length - 1][target];
-        System.out.println("Jumlah cara untuk mencapai sum " + target + " dengan 5 koin [1, 2, 3, 4, 5] adalah: " + hasilAkhir + " cara.");
+
+        //Inisialisasi Basis, kolom sum = 0 pada setiap baris bernilai 1
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            int koin = coins[i - 1];
+
+            for (int j = 1; j <= targetSum; j++) {
+                int atas = dp[i - 1][j];
+
+                int samping = 0;
+                if (j >= koin) {
+                    samping = dp[i][j - koin];
+                }
+
+                dp[i][j] = atas + samping;
+            }
+        }
+
+        int hasil = dp[n][targetSum];
+
+        System.out.println("Target Sum: " + targetSum);
+        System.out.println("Jumlah kombinasi cara: " + hasil);
     }
 }
